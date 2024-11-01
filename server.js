@@ -11,15 +11,15 @@ async function handleRequest(request) {
   const statusCode = parseInt(path);
 
   // Default message if a valid status code isn't provided
-  let statusMessage = "NotImplementedException (contact author)"; // reference to c# :D
+  let statusMessage = "NotImplementedException (contact author)"; // reference to C# :D
 
   // Check if the parsed path is a valid HTTP status code
   if (!isNaN(statusCode) && statusCode >= 100 && statusCode <= 599) {
     // Use a standard message if the code is recognized
-    statusMessage = ${statusCode} - ${getStatusMessage(statusCode)};
+    statusMessage = `${statusCode} - ${getStatusMessage(statusCode)}`;
   } else {
     // If the code is invalid, use 400 Bad Request by default
-    return new Response("452 - Client Is Awful", { status: 452 }); // easter egg? maybe? i might have to remove this
+    return new Response("400 - Bad Request", { status: 400 });
   }
 
   return new Response(statusMessage, { status: statusCode });
@@ -55,7 +55,7 @@ function getStatusMessage(statusCode) {
     305: "Use Proxy",
     307: "Temporary Redirect",
     308: "Permanent Redirect",
-    
+
     // 4xx: Client Error
     400: "Bad Request",
     401: "Unauthorized",
@@ -75,7 +75,7 @@ function getStatusMessage(statusCode) {
     415: "Unsupported Media Type",
     416: "Range Not Satisfiable",
     417: "Expectation Failed",
-    418: "I'm a teapot",
+    418: "I'm a teapot", // fun easter egg!
     421: "Misdirected Request",
     422: "Unprocessable Entity",
     423: "Locked",
@@ -99,6 +99,7 @@ function getStatusMessage(statusCode) {
     508: "Loop Detected",
     510: "Not Extended",
     511: "Network Authentication Required",
-  };
-  return messages[statusCode] || "Custom Status Code";
+  }
+   // Return a default message for unrecognized codes.
+   return messages[statusCode] || "Custom Status Code"
 }
